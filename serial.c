@@ -11,9 +11,11 @@
 */
 #include "header.h"
 
+/* Read and Write pointers of a circular buffer */
 uint8  *rx_read_ptr = rx_buffer;
 uint8  *rx_write_ptr = rx_buffer;
 
+/* ISR that feeds the circular buffer with new serial inputs */
 CY_ISR(isr_rx)
 {
     while(UART_RF_ReadRxStatus() & UART_RF_RX_STS_FIFO_NOTEMPTY)
@@ -26,11 +28,13 @@ CY_ISR(isr_rx)
     INT_RX_ClearPending();
 }
 
+/* Method that verifies if is a new char in the circular buffer */
 static uint8 is_buffer_ready(Serial *this)
 {
     return this-> ch_rdy = !(rx_write_ptr == rx_read_ptr);
 }
 
+/* Method that reads the circular buffer until an EOM is reached */
 static uint8 read_buffer(Serial *this, char eom)
 {
     this->str_rdy = 0;
@@ -49,6 +53,7 @@ static uint8 read_buffer(Serial *this, char eom)
     return this->str_rdy;  
 }
 
+/* Private constructor of the object */
 static void construct(Serial *this)
 {
     this->rx_str_ptr = this->rx_str;
@@ -59,6 +64,7 @@ static void construct(Serial *this)
     this->read_buffer = &read_buffer;
 }
 
+/* Public constructor that calls the private constructor */
 void serial_construct(Serial *this)
 {
     this->construct = &construct;
