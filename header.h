@@ -17,6 +17,7 @@
 #include "project.h"
 #include "serial.h"
     
+/* States of the design pattern of state */
 typedef enum State
 {
   PositionA,
@@ -25,6 +26,7 @@ typedef enum State
   PositionD
 }State;
 
+/* Inputs that triggers the change of context, i.e. change of state */
 typedef enum Input
 {
   Unknown,
@@ -42,9 +44,8 @@ typedef void (*const StateOut)();
 State current_state;
 Input current_input;
 
+/* State Machine updater */
 extern StateOut fsm_update;
-
-
 
 #endif
 /* [] END OF FILE */
