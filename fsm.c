@@ -11,6 +11,7 @@
 */
 #include "header.h"
 
+/* Modifies the built-in function of _write, so printf can print over UART */
 int _write(int file, char *ptr, int len)
 {
     int i;
@@ -66,6 +67,7 @@ void update()
     ptr_state_out();
 }
 
+/* Function pointer to the updater of the state machine */
 StateOut fsm_update = update;
 
 /* [] END OF FILE */
